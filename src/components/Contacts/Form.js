@@ -2,20 +2,21 @@ import React from "react";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { nanoid } from "@reduxjs/toolkit";
-import { addContact, addContacts } from "../../redux/contactSlice";
+import { addContact } from "../../redux/contactSlice";
 
 function Form() {
   const dispatch = useDispatch();
 
   const [name, setName] = useState("");
+  const [number, setNumber] = useState("");
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!name) return;
-    const names = name.split(",");
-    const data = names.map((name) => ({ id: nanoid(), name }));
+    if (!name || !number) return;
 
-    dispatch(addContacts(data));
+    dispatch(addContact({ id: nanoid(), name: name, phone_number: number }));
     setName("");
+    setNumber("");
   };
 
   return (
@@ -26,6 +27,14 @@ function Form() {
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
+        <input
+          placeholder="number"
+          value={number}
+          onChange={(e) => setNumber(e.target.value)}
+        />
+        <div className="btn">
+          <button type="submit">Add</button>
+        </div>
       </form>
     </div>
   );
